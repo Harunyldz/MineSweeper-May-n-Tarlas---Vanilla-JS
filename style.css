@@ -1,0 +1,281 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100vh;
+}
+
+body {
+    width: 100%;
+    display: grid;
+    place-items: center;
+    background: #0000004b;
+    font-family: "Roboto", sans-serif;
+}
+
+#gameModal{
+    position: absolute;
+    background-color: #fa9701;
+    color: #D83F31;
+    border: 3px solid #D83F31;
+    padding: 40px 50px;
+    border-radius: 10px;
+    width: 400px;
+    height: 250px;
+    display: none;
+}
+
+#closeGameModal{
+    width: 30px;
+    position: absolute;
+    top:10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+#closeGameModal:hover{
+    filter: brightness(1.1);
+}
+
+#closeGameModal>img{
+    width: 100%;
+}
+
+#gameWinModal, #gameLoseModal{
+  display: none;
+  flex-direction: column;
+  align-items:center;
+  justify-content: center;
+  gap: 10px;
+}
+
+#gameModalDiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    gap: 10px;
+}
+
+#gameModalTime{
+    font-weight: 500;
+    font-size: 24px;
+}
+
+#gameWinModal img, #gameLoseModal img{
+    width: 100px;
+}
+
+#questionModal{
+    position: absolute;
+    background-color: #fa9701;
+    color: #D83F31;
+    border: 3px solid #D83F31;
+    padding: 20px 50px;
+    border-radius: 10px;
+    width: 40%;
+    display: none;
+    z-index: 999;
+}
+
+@media screen and (max-width:600px ){
+    #questionModal{
+        padding: 20px ;
+        width: 70%;
+    }
+}
+
+#closeModal{
+    width: 30px;
+    position: absolute;
+    top:10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+#closeModal:hover{
+    filter: brightness(1.1);
+}
+
+#closeModal>img{
+    width: 100%;
+}
+
+#questionModal h3{
+    margin: 20px 0;
+    border-bottom: 1px solid #D83F31;
+}
+
+
+.topSection {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 100%;
+    background-color: aqua;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #219C90;
+    padding: 10px;
+    border: 1px solid #219C90;
+}
+
+#qMark{
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+#qMark:hover{
+    filter: brightness(1.1);
+}
+
+#qMark>img{
+    width: 100%;
+}
+
+#language{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #fa9701;
+    color: #D83F31;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#language:hover{
+    filter: brightness(1.1);
+}
+
+select {
+    padding: 10px 8px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color:#fa9701;
+    color: #fff;
+    cursor: pointer;
+    width: 90px;
+}
+
+option{
+    font-size: 14px;
+    font-weight: 500;
+}
+
+option:nth-child(1){
+    color: green;
+}
+option:nth-child(2){
+    color: blue;
+}
+option:nth-child(3){
+    color: red;
+}
+
+.mineCountDiv{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 80px;
+}
+
+.mineCountDiv>img{
+    width: 30%;
+}
+
+.mineCountSpan{
+    color: #fa9701;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.timerDiv{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 5px;
+    width: 80px;
+}
+
+.timerDiv>img{
+    width: 30%;
+}
+
+#timerSpan{
+    color: #fa9701;
+    font-size: 24px;
+}
+
+#startDiv{
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+#startDiv:hover{
+    filter: brightness(1.1);
+}
+
+#startDiv>img{
+    width: 100%;
+}
+
+#mainDiv {
+    padding: 10px;
+    background: #fa9701;
+    display: grid;
+    gap: 2px;
+    border: 1px solid #219C90;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+    width: 440px;
+}
+
+#mainDiv>img{
+    width: 100%;
+    filter: brightness(0.6);
+}
+
+.cell,
+.emptyCell,
+.mineCell,
+.numCell {
+    width: 40px;
+    height: 40px;
+    background-color: #2D9596;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.cell:hover {
+    background-color: rgb(106, 238, 194);
+}
+
+.emptyCell, .emptyCell:hover{
+    background-color: rgb(185, 199, 195);
+}
+
+.mineCell,.mineCell:hover {
+    background-color: #D83F31;
+}
+
+.numCell {
+    color: #fff;
+    transition: 0.2s;
+}
+
+.wrongeCell{
+    background-color: #3d4572;
+}

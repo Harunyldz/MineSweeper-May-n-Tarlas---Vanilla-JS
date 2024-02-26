@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+    <div id="gameModal">
+        <div id="closeGameModal">
+            <img src="./assets/closeModal.svg" alt="close sign icon">
+        </div>
+        <div id="gameLoseModal">
+
+            <h2 id="gameLoseModalHeader">We're sorry, you lost!!!</h2>
+            <img src="./assets/sadFace.svg" alt="sad face icon">
+        </div>
+        <div id="gameWinModal">
+
+            <h2 id="gameWinModalHeader">Congratulations, you won!!!</h2>
+            <div id="gameModalDiv">
+                <img src="./assets/clock.svg" alt="">
+                <span id="gameModalTime"></span>
+            </div>
+            <img src="./assets/happyFace.svg" alt="happy face icon">
+        </div>
+    </div>
+
+
+    <div id="questionModal">
+        <div id="closeModal">
+            <img src="./assets/closeModal.svg" alt="close sign icon">
+        </div>
+        <h3 id="h3">How to Play?</h3>
+        <p id="pModalTR">
+            Mayın Tarlası kuralları oldukça basittir. Oyun tahtası hücrelere bölünmüş ve mayınlar rastgele dağıtılmıştır.
+            Kazanmak için mayın içeren tüm hücreleri açmanız gerekiyor. Bir hücredeki sayı, etrafındaki mayın sayısını
+            gösterir. Bu
+            bilgiyi kullanarak güvenli hücreleri ve mayın içeren hücreleri belirleyebilirsiniz. Mayın olduğu
+            şüphelenilen hücreler, sağ fare tuşunu kullanarak kırmızı bir bayrak ile işaretlenebilir. Mayın içeren bir
+            hücre sol fare tuşuyla açılırsa oyun kaybedilir!</p>
+        <p id="pModalEN">Minesweeper rules are very simple. The board is divided into cells, with mines randomly
+            distributed. To win,
+            you need to open all the cells that contain mines. The number on a cell shows the number of mines adjacent
+            to it. Using this
+            information, you can determine cells that are safe, and cells that contain mines. Cells suspected of being
+            mines can be marked with a red flag using the right mouse button.
+            If a cell containing a mine is opened with the left mouse button, the game is lost! </p>
+    </div>
+
+
+    <div class="gameArea">
+        <div class="topSection">
+            <div id="qMark">
+                <img src="./assets/qMark.svg" alt="question mark icon">
+            </div>
+            <span id="language">TR</span>
+            <select name="levels" id="levels">
+                <option value="easy">Easy</option>
+                <option value="middle">Middle</option>
+                <option value="hard">Hard</option>
+            </select>
+            <div class="mineCountDiv">
+                <img src="./assets/redFlag.svg" alt=" red flag icon">
+                <span id="mineCountSpan" class="mineCountSpan">0</span>
+            </div>
+            <div class="timerDiv">
+                <img src="./assets/clock.svg" alt=" timer icon">
+                <span id="timerSpan">0</span>
+            </div>
+            <div id="startDiv">
+                <img id="startImg" src="./assets/start.svg" alt="start icon">
+            </div>
+        </div>
+        <div id="mainDiv">
+            <img id="demoImg" src="./assets/demo.png" alt="">
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>
