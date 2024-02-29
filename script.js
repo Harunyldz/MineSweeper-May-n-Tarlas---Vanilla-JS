@@ -342,7 +342,7 @@ startBtn.addEventListener("click", () => {
         });
 
     } else {
-        endGame()
+        endGame() 
     }
     startBtnClicked = !startBtnClicked
     startImg.src = startBtnClicked ? "./assets/start.svg" : "./assets/close.svg"
