@@ -15,11 +15,12 @@ let gameTimer
 let isQuestionModalClicked = false
 let isLanguageTR = false
 
+//imports
 import gameSettings from "./utils/gameSettings.js"
 import languageData from "./utils/languageData.js"
 import numberColors from "./utils/numberColors.js"
 
-
+//HTML elements
 const mainDiv = document.getElementById("mainDiv")
 const mineCountSpan = document.getElementById("mineCountSpan")
 const levelSelect = document.getElementById("levels")
@@ -371,10 +372,6 @@ startBtn.addEventListener("click", () => {
     startImg.src = startBtnClicked ? "./assets/start.svg" : "./assets/close.svg"
 })
 
-console.log("mineCount:", mineCount)
-console.log("indexes diszi:", indexes)
-console.log("mineindexes dizisi", mineIndexes.sort())
-
 function getBoard() {
     for (let i = 0; i < rowCount; i++) {
         indexes[i] = [];
@@ -482,8 +479,6 @@ function showAllMines(cells) {
             clearInterval(getOneUnopenedMine);
         }
     }, mineOpenTime);
-
-    console.log("unopened mines: ", unopenedMines);
 }
 
 function Time() {
