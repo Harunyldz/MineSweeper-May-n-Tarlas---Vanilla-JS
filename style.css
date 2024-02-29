@@ -27,7 +27,14 @@ body {
     width: 400px;
     height: 300px;
     display: none;
-   
+}
+
+@media screen and (max-width:480px) {
+    #gameModal{
+        padding: 40px 25px;
+        width: 300px;
+        height: 280px;
+    }
 }
 
 #closeGameModal {
@@ -97,6 +104,13 @@ body {
 #gameWinModal img,
 #gameLoseModal img {
     width: 100px;
+}
+
+@media screen and (max-width:480px) {
+    #gameWinModal img,
+    #gameLoseModal img {
+        width: 80px;
+    }
 }
 
 #questionModal {
@@ -272,12 +286,6 @@ option:nth-child(3) {
     width: 440px;
 }
 
-@media screen and (max-width:480px) {
-    #mainDiv {
-        width: 300px;
-    }
-}
-
 #mainDiv>img {
     width: 100%;
     filter: brightness(0.6);
@@ -327,6 +335,7 @@ option:nth-child(3) {
 .numCell {
     color: #fff;
     transition: 0.2s;
+    background-color: #22857b;
 }
 
 .wrongeCell {

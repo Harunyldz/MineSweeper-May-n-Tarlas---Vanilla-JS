@@ -68,7 +68,6 @@ function resetGame() {
     gameModal.style.display = "none"
     clearBoard();
     prepareForNewGame();
-    console.log("prepare fonk. bitti")
     startBtnClicked = true
     if (startBtnClicked) {
         demoImg.remove()
@@ -131,6 +130,7 @@ function resetGame() {
                             cellType = "mine"
                             cell.setAttribute("data-cell-type", cellType)
                             gameModal.style.display = "block"
+                            gameWinModal.style.display="none"
                             gameLoseModal.style.display = "flex"
                             showAllMines(cells)
                             clearInterval(gameTimer)
@@ -207,7 +207,6 @@ function resetGame() {
     startBtnClicked = !startBtnClicked
     startImg.src = startBtnClicked ? "./assets/start.svg" : "./assets/close.svg"
 
-    // İhtiyaca göre diğer sıfırlama işlemleri ekleyebilirsiniz
 }
 
 function clearBoard() {
@@ -217,7 +216,6 @@ function clearBoard() {
         cell.classList.remove("cell", "emptyCell", "numCell", "mineCell", "wrongeCell");
         cell.innerHTML = "";
         cell.remove()
-        // İhtiyaca göre diğer hücre sıfırlama işlemleri ekleyebilirsiniz
     });
 
     mainDiv.style.gridTemplateColumns = "none";
@@ -269,8 +267,7 @@ function prepareForNewGame() {
     mainDiv.style.gridTemplateRows = `repeat(${rowCount}, 1fr)`;
     mineCountSpan.textContent = mineCount
     getBoard()
-    console.log("prepare fonk . çalıştı")
-    // Ekranı temizledikten sonra gerektiğinde başka başlangıç durumu ayarlamaları yapabilirsin
+
 }
 
 
@@ -282,7 +279,8 @@ const languageData = {
         modalDisplayEN: "none",
         selectOptions: "<option value='easy'>Kolay</option> <br> <option value='middle'>Orta</option> <br> <option value='hard'>Zor</option>",
         gameLoseModalHeader: "Üzgünüz kaybettiniz!!!",
-        gameWinModalHeader: "Tebrikler kazandınız!!!"
+        gameWinModalHeader: "Tebrikler kazandınız!!!",
+        restartBtn:"Tekrar Başlat "
     },
     en: {
         buttonText: "TR",
@@ -291,7 +289,8 @@ const languageData = {
         modalDisplayEN: "block",
         selectOptions: "<option value='easy'>Easy</option> <br> <option value='middle'>Middle</option> <br> <option value='hard'>Hard</option>",
         gameLoseModalHeader: "We're sorry, you lost!!!",
-        gameWinModalHeader: "Congratulations, you won!!!"
+        gameWinModalHeader: "Congratulations, you won!!!",
+        restartBtn:"restart"
     }
 };
 
@@ -306,6 +305,7 @@ language.addEventListener("click", () => {
     levelSelect.innerHTML = data.selectOptions
     gameLoseModalHeader.textContent = data.gameLoseModalHeader
     gameWinModalHeader.textContent = data.gameWinModalHeader
+    restartBtn.textContent=data.restartBtn
 
     isLanguageTR = !isLanguageTR;
 });
@@ -569,6 +569,30 @@ function getMineCounts() {
                 cellMineCount = 0
             }
             cell.setAttribute("data-mine-count", cellMineCount);
+            switch (cellMineCount) {
+                case 1:
+                    cell.style.color="#fff    "
+                    break;
+                case 2:
+                    cell.style.color="#FB8B24    "
+                    break;
+                case 3:
+                    cell.style.color="#f52045   "
+                    break;
+                case 4:
+                    cell.style.color="#3AB0FF "
+                    break;
+                case 5:
+                    cell.style.color="#0E2E3B "
+                    break;
+                case 6:
+                    cell.style.color="#750546 "
+                    break;
+            
+                default:
+                    cell.style.color="black"
+                    break;
+            }
         }
     }
 }
