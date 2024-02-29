@@ -8,6 +8,7 @@ let isStarted = false
 let indexes = []
 let mineIndexes = []
 let cellType = ""
+let isGameFinished = false
 
 let time = 0
 let gameTimer
@@ -91,43 +92,52 @@ function resetGame() {
 
                 if (!isStarted) {
                     firstClick(cell, index)
+                    const i = Math.floor(index / colCount);
+                    const j = index % colCount;
+                    openEmptyAndNumCells(i, j);
                 }
                 else {
-                    if (!cell.classList.contains("mineCell")) {
-                        const cellMineCount = parseInt(cell.getAttribute("data-mine-count"));
-                        if (cell.classList.contains("numCell") && cell.textContent === "") {
-                            cell.textContent = cellMineCount.toString();
-                        }
-                        const celldataType = cell.getAttribute("data-cell-type")
+                    if (!isGameFinished) {
 
-                        if (celldataType === "empty") {
-                            cell.classList.add("emptyCell")
-                        }
+                        if (!cell.classList.contains("mineCell")) {
+                            const cellMineCount = parseInt(cell.getAttribute("data-mine-count"));
+                            if (cell.classList.contains("numCell") && cell.textContent === "") {
+                                cell.textContent = cellMineCount.toString();
+                            }
+                            const celldataType = cell.getAttribute("data-cell-type")
 
-                        if (celldataType === "empty") {
-                            cellType = "empty"
-                            cell.setAttribute("data-cell-type", cellType)
-                            cell.classList.add("emptyCell")
-                            cell.innerHTML = ""
-                        }
+                            // if (celldataType === "empty") {
+                            //     cell.classList.add("emptyCell")
+                            // }
 
-                        if ((cellMineCount > 0)) {
-                            cellType = "num"
-                            cell.setAttribute("data-cell-type", cellType)
-                            cell.innerHTML = cellMineCount;
-                            cell.classList.add("numCell")
-                        }
+                            if (celldataType === "empty") {
+                                cellType = "empty"
+                                cell.setAttribute("data-cell-type", cellType)
+                                // cell.classList.add("emptyCell")
+                                cell.innerHTML = ""
+                                const i = Math.floor(index / colCount);
+                                const j = index % colCount;
+                                openEmptyAndNumCells(i, j);
+                            }
 
-                        if (celldataType === "mine") {
-                            cell.classList.add("mineCell")
-                            cell.innerHTML = ""
-                            cellType = "mine"
-                            cell.setAttribute("data-cell-type", cellType)
-                            gameModal.style.display = "block"
-                            gameWinModal.style.display = "none"
-                            gameLoseModal.style.display = "flex"
-                            showAllMines(cells)
-                            clearInterval(gameTimer)
+                            if ((cellMineCount > 0)) {
+                                cellType = "num"
+                                cell.setAttribute("data-cell-type", cellType)
+                                cell.innerHTML = cellMineCount;
+                                cell.classList.add("numCell")
+                            }
+
+                            if (celldataType === "mine") {
+                                cell.classList.add("mineCell")
+                                cell.innerHTML = ""
+                                cellType = "mine"
+                                cell.setAttribute("data-cell-type", cellType)
+                                gameModal.style.display = "block"
+                                gameWinModal.style.display = "none"
+                                gameLoseModal.style.display = "flex"
+                                showAllMines(cells)
+                                clearInterval(gameTimer)
+                            }
                         }
                     }
                 }
@@ -212,6 +222,7 @@ function prepareForNewGame() {
     mainDiv.style.gridTemplateRows = `repeat(${rowCount}, 1fr)`;
     mineCountSpan.textContent = mineCount
     getBoard()
+    isGameFinished = false
 
 }
 
@@ -235,6 +246,7 @@ let startBtnClicked = true
 const startImg = document.getElementById("startImg")
 const demoImg = document.getElementById("demoImg")
 startBtn.addEventListener("click", () => {
+    isGameFinished = false
     if (startBtnClicked) {
         demoImg.remove()
         mainDiv.style.width = "auto"
@@ -256,43 +268,53 @@ startBtn.addEventListener("click", () => {
                 if (!isStarted) {
 
                     firstClick(cell, index)
+                    const i = Math.floor(index / colCount);
+                    const j = index % colCount;
+                    openEmptyAndNumCells(i, j);
+
                 }
                 else {
-                    if (!cell.classList.contains("mineCell")) {
-                        const cellMineCount = parseInt(cell.getAttribute("data-mine-count"));
-                        if (cell.classList.contains("numCell") && cell.textContent === "") {
-                            cell.textContent = cellMineCount.toString();
-                        }
-                        const celldataType = cell.getAttribute("data-cell-type")
+                    if (!isGameFinished) {
 
-                        if (celldataType === "empty") {
-                            cell.classList.add("emptyCell")
-                        }
+                        if (!cell.classList.contains("mineCell")) {
+                            const cellMineCount = parseInt(cell.getAttribute("data-mine-count"));
+                            if (cell.classList.contains("numCell") && cell.textContent === "") {
+                                cell.textContent = cellMineCount.toString();
+                            }
+                            const celldataType = cell.getAttribute("data-cell-type")
 
-                        if (celldataType === "empty") {
-                            cellType = "empty"
-                            cell.setAttribute("data-cell-type", cellType)
-                            cell.classList.add("emptyCell")
-                            cell.innerHTML = ""
-                        }
+                            // if (celldataType === "empty") {
+                            //     cell.classList.add("emptyCell")
+                            // }
 
-                        if ((cellMineCount > 0)) {
-                            cellType = "num"
-                            cell.setAttribute("data-cell-type", cellType)
-                            cell.innerHTML = cellMineCount;
-                            cell.classList.add("numCell")
-                        }
+                            if (celldataType === "empty") {
+                                cellType = "empty"
+                                cell.setAttribute("data-cell-type", cellType)
+                                // cell.classList.add("emptyCell")
+                                cell.innerHTML = ""
+                                const i = Math.floor(index / colCount);
+                                const j = index % colCount;
+                                openEmptyAndNumCells(i, j);
+                            }
 
-                        if (celldataType === "mine") {
-                            cell.classList.add("mineCell")
-                            cell.innerHTML = ""
-                            cellType = "mine"
-                            cell.setAttribute("data-cell-type", cellType)
-                            gameModal.style.display = "block"
-                            gameLoseModal.style.display = "flex"
-                            gameWinModal.style.display = "none"
-                            showAllMines(cells)
-                            clearInterval(gameTimer)
+                            if ((cellMineCount > 0)) {
+                                cellType = "num"
+                                cell.setAttribute("data-cell-type", cellType)
+                                cell.innerHTML = cellMineCount;
+                                cell.classList.add("numCell")
+                            }
+
+                            if (celldataType === "mine") {
+                                cell.classList.add("mineCell")
+                                cell.innerHTML = ""
+                                cellType = "mine"
+                                cell.setAttribute("data-cell-type", cellType)
+                                gameModal.style.display = "block"
+                                gameLoseModal.style.display = "flex"
+                                gameWinModal.style.display = "none"
+                                showAllMines(cells)
+                                clearInterval(gameTimer)
+                            }
                         }
                     }
                 }
@@ -342,7 +364,8 @@ startBtn.addEventListener("click", () => {
         });
 
     } else {
-        endGame() 
+        endGame()
+        isGameFinished = true
     }
     startBtnClicked = !startBtnClicked
     startImg.src = startBtnClicked ? "./assets/start.svg" : "./assets/close.svg"
@@ -424,7 +447,7 @@ function getMineCounts() {
                 cell.setAttribute("data-cell-type", cellType);
             }
             if (cellMineCount > 0 && cellDataTypeIsMine === "mine") {
-                cellMineCount = 0
+                cellMineCount = ""
             }
             cell.setAttribute("data-mine-count", cellMineCount);
             cell.style.color = numberColors[cellMineCount]
@@ -433,6 +456,7 @@ function getMineCounts() {
 }
 
 function showAllMines(cells) {
+    isGameFinished = true
     const unopenedMines = [];
 
     cells.forEach(cell => {
@@ -451,6 +475,7 @@ function showAllMines(cells) {
     const getOneUnopenedMine = setInterval(() => {
         if (unopenedMines.length > 0) {
             const unopenedmineIndex = randomIndex(unopenedMines);
+            playExplosionAnimation(unopenedMines[unopenedmineIndex])
             unopenedMines[unopenedmineIndex].classList.add("mineCell");
             unopenedMines.splice(unopenedmineIndex, 1);
         } else {
@@ -490,13 +515,12 @@ function setSettings(selectedDifficulty) {
     mineCount = currentSettings.mineCount;
     cellWidth = currentSettings.cellWidth;
     cellHeight = currentSettings.cellHeight;
-    mineOpenTime=currentSettings.mineOpenTime
+    mineOpenTime = currentSettings.mineOpenTime
 }
 
 function firstClick(cell, index) {
     cellType = "empty"
     cell.setAttribute("data-cell-type", cellType)
-    cell.classList.add("emptyCell")
 
     const i = Math.floor(index / colCount)
     const j = index % colCount
@@ -538,3 +562,59 @@ function randomIndex(unopenedMines) {
     const randomMineIndex = Math.floor(Math.random() * unopenedMines.length)
     return randomMineIndex
 }
+
+function playExplosionAnimation(cell) {
+    cell.classList.add("mineCellAnimation");
+    cell.addEventListener("animationend", () => {
+    }, { once: true });
+}
+
+
+function openEmptyAndNumCells(rowIndex, colIndex) {
+    if (!isGameFinished) {
+        const currentCell = document.getElementById("mainDiv").children[rowIndex * colCount + colIndex];
+        const cellDataType = currentCell.getAttribute("data-cell-type");
+
+        if (cellDataType === "empty" && !currentCell.classList.contains("emptyCell")) {
+            currentCell.classList.add("emptyCell");
+
+            // Açılan empty hücrenin etrafındaki tüm hücreleri kontrol et
+            for (let x = -1; x <= 1; x++) {
+                for (let y = -1; y <= 1; y++) {
+                    const neighborRowIndex = rowIndex + x;
+                    const neighborColIndex = colIndex + y;
+
+                    // Geçerli hücrenin sınırları içinde mi kontrol et
+                    if (
+                        neighborRowIndex >= 0 &&
+                        neighborRowIndex < rowCount &&
+                        neighborColIndex >= 0 &&
+                        neighborColIndex < colCount
+                    ) {
+                        const neighborCell = document.getElementById("mainDiv").children[neighborRowIndex * colCount + neighborColIndex];
+
+                        if (!neighborCell.classList.contains("emptyCell")) {
+                            // Eğer empty veya num hücre değilse ve daha önce açılmamışsa
+                            if (neighborCell.getAttribute("data-cell-type") !== "empty" && neighborCell.getAttribute("data-cell-type") !== "num" && !neighborCell.classList.contains("emptyCell")) {
+
+                                if (neighborCell.getAttribute("data-cell-type") !== "mine") {
+                                    neighborCell.classList.add("numCell");
+                                    neighborCell.textContent = neighborCell.getAttribute("data-mine-count")
+                                }
+                            }
+                            setTimeout(() => {
+
+                                openEmptyAndNumCells(neighborRowIndex, neighborColIndex);
+                            }, 100);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+
+
+
