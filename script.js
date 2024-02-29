@@ -2,16 +2,22 @@ let rowCount
 let colCount
 let cellWidth
 let cellHeight
+let mineCount
+let mineOpenTime
 let isStarted = false
 let indexes = []
 let mineIndexes = []
-let mineCount
 let cellType = ""
-let level = "easy"
+
 let time = 0
 let gameTimer
 let isQuestionModalClicked = false
 let isLanguageTR = false
+
+import gameSettings from "./utils/gameSettings.js"
+import languageData from "./utils/languageData.js"
+import numberColors from "./utils/numberColors.js"
+
 
 const mainDiv = document.getElementById("mainDiv")
 const mineCountSpan = document.getElementById("mineCountSpan")
@@ -36,6 +42,8 @@ const gameLoseModalHeader = document.getElementById("gameLoseModalHeader")
 const gameWinModalHeader = document.getElementById("gameWinModalHeader")
 const startBtn = document.getElementById("startDiv")
 const restartBtn = document.getElementById("restartBtn")
+
+setSettings(levelSelect.value)
 
 qMark.addEventListener("click", () => {
     toggleModal();
@@ -81,22 +89,8 @@ function resetGame() {
 
             cell.addEventListener("click", () => {
 
-                const i = Math.floor(index / colCount)
-                const j = index % colCount
-
                 if (!isStarted) {
-                    cellType = "empty"
-                    cell.setAttribute("data-cell-type", cellType)
-                    cell.classList.add("emptyCell")
-
-                    let firstClickedIndex = [i, j]
-
-                    getMines(firstClickedIndex)
-                    putMines()
-                    getMineCounts()
-                    gameTimer = setInterval(Time, 1000)
-                    isStarted = true
-                    cell.innerHTML = ""
+                    firstClick(cell, index)
                 }
                 else {
                     if (!cell.classList.contains("mineCell")) {
@@ -130,7 +124,7 @@ function resetGame() {
                             cellType = "mine"
                             cell.setAttribute("data-cell-type", cellType)
                             gameModal.style.display = "block"
-                            gameWinModal.style.display="none"
+                            gameWinModal.style.display = "none"
                             gameLoseModal.style.display = "flex"
                             showAllMines(cells)
                             clearInterval(gameTimer)
@@ -183,26 +177,7 @@ function resetGame() {
         });
 
     } else {
-        const cells = document.querySelectorAll(".cell")
-        cells.forEach(cell => {
-            cell.classList.remove("cell")
-            cell.remove()
-        });
-        colCount = 0
-        rowCount = 0
-        mineCount = 0
-        mineIndexes.length = 0
-        mainDiv.style.gridTemplateColumns = `none`;
-        mainDiv.style.gridTemplateRows = `none`;
-        mainDiv.appendChild(demoImg)
-        demoImg.src = "./assets/demo.png"
-        mineCountSpan.textContent = "0"
-        clearInterval(gameTimer)
-        timerSpan.textContent = "0"
-        levelSelect.value = "easy"
-        isStarted = false
-        gameModal.style.display = "none"
-        mainDiv.style.width = "440px"
+        endGame()
     }
     startBtnClicked = !startBtnClicked
     startImg.src = startBtnClicked ? "./assets/start.svg" : "./assets/close.svg"
@@ -222,39 +197,9 @@ function clearBoard() {
     mainDiv.style.gridTemplateRows = "none";
 }
 function prepareForNewGame() {
- 
-    level = levelSelect.value
-    switch (level) {
-        case "easy":
-            colCount = 10
-            rowCount = 10
-            mineCount = 10
-            cellWidth = "40px"
-            cellHeight = "40px"
-            break;
-        case "middle":
-            colCount = 18
-            rowCount = 14
-            mineCount = 40
-            cellWidth = "35px"
-            cellHeight = "35px"
-            break;
-        case "hard":
-            colCount = 24
-            rowCount = 20
-            mineCount = 99
-            cellWidth = "30px"
-            cellHeight = "30px"
-            break;
 
-        default:
-            colCount = 10
-            rowCount = 10
-            mineCount = 10
-            cellWidth = "40px"
-            cellHeight = "40px"
-            break;
-    }
+    setSettings(levelSelect.value);
+
     indexes = [];
     mineIndexes = [];
     isStarted = false;
@@ -270,30 +215,6 @@ function prepareForNewGame() {
 
 }
 
-
-const languageData = {
-    tr: {
-        buttonText: "EN",
-        headerText: "Nasıl Oynanır?",
-        modalDisplayTR: "block",
-        modalDisplayEN: "none",
-        selectOptions: "<option value='easy'>Kolay</option> <br> <option value='middle'>Orta</option> <br> <option value='hard'>Zor</option>",
-        gameLoseModalHeader: "Üzgünüz kaybettiniz!!!",
-        gameWinModalHeader: "Tebrikler kazandınız!!!",
-        restartBtn:"Tekrar Başlat "
-    },
-    en: {
-        buttonText: "TR",
-        headerText: "How to Play?",
-        modalDisplayTR: "none",
-        modalDisplayEN: "block",
-        selectOptions: "<option value='easy'>Easy</option> <br> <option value='middle'>Middle</option> <br> <option value='hard'>Hard</option>",
-        gameLoseModalHeader: "We're sorry, you lost!!!",
-        gameWinModalHeader: "Congratulations, you won!!!",
-        restartBtn:"restart"
-    }
-};
-
 language.addEventListener("click", () => {
     const currentLanguage = isLanguageTR ? "en" : "tr";
     const data = languageData[currentLanguage];
@@ -305,7 +226,7 @@ language.addEventListener("click", () => {
     levelSelect.innerHTML = data.selectOptions
     gameLoseModalHeader.textContent = data.gameLoseModalHeader
     gameWinModalHeader.textContent = data.gameWinModalHeader
-    restartBtn.textContent=data.restartBtn
+    restartBtn.textContent = data.restartBtn
 
     isLanguageTR = !isLanguageTR;
 });
@@ -319,38 +240,7 @@ startBtn.addEventListener("click", () => {
         mainDiv.style.width = "auto"
         time = 0
 
-        level = levelSelect.value
-        switch (level) {
-            case "easy":
-                colCount = 10
-                rowCount = 10
-                mineCount = 10
-                cellWidth = "40px"
-                cellHeight = "40px"
-                break;
-            case "middle":
-                colCount = 18
-                rowCount = 14
-                mineCount = 40
-                cellWidth = "35px"
-                cellHeight = "35px"
-                break;
-            case "hard":
-                colCount = 24
-                rowCount = 20
-                mineCount = 99
-                cellWidth = "30px"
-                cellHeight = "30px"
-                break;
-
-            default:
-                colCount = 10
-                rowCount = 10
-                mineCount = 10
-                cellWidth = "40px"
-                cellHeight = "40px"
-                break;
-        }
+        setSettings(levelSelect.value);
 
         mainDiv.style.gridTemplateColumns = `repeat(${colCount}, 1fr)`;
         mainDiv.style.gridTemplateRows = `repeat(${rowCount}, 1fr)`;
@@ -363,22 +253,9 @@ startBtn.addEventListener("click", () => {
 
             cell.addEventListener("click", () => {
 
-                const i = Math.floor(index / colCount)
-                const j = index % colCount
-
                 if (!isStarted) {
-                    cellType = "empty"
-                    cell.setAttribute("data-cell-type", cellType)
-                    cell.classList.add("emptyCell")
 
-                    let firstClickedIndex = [i, j]
-
-                    getMines(firstClickedIndex)
-                    putMines()
-                    getMineCounts()
-                    gameTimer = setInterval(Time, 1000)
-                    isStarted = true
-                    cell.innerHTML = ""
+                    firstClick(cell, index)
                 }
                 else {
                     if (!cell.classList.contains("mineCell")) {
@@ -413,7 +290,7 @@ startBtn.addEventListener("click", () => {
                             cell.setAttribute("data-cell-type", cellType)
                             gameModal.style.display = "block"
                             gameLoseModal.style.display = "flex"
-                            gameWinModal.style.display="none"
+                            gameWinModal.style.display = "none"
                             showAllMines(cells)
                             clearInterval(gameTimer)
                         }
@@ -465,26 +342,7 @@ startBtn.addEventListener("click", () => {
         });
 
     } else {
-        const cells = document.querySelectorAll(".cell")
-        cells.forEach(cell => {
-            cell.classList.remove("cell")
-            cell.remove()
-        });
-        colCount = 0
-        rowCount = 0
-        mineCount = 0
-        mineIndexes.length = 0
-        mainDiv.style.gridTemplateColumns = `none`;
-        mainDiv.style.gridTemplateRows = `none`;
-        mainDiv.appendChild(demoImg)
-        demoImg.src = "./assets/demo.png"
-        mineCountSpan.textContent = "0"
-        clearInterval(gameTimer)
-        timerSpan.textContent = "0"
-        levelSelect.value = "easy"
-        isStarted = false
-        gameModal.style.display = "none"
-        mainDiv.style.width = "440px"
+        endGame()
     }
     startBtnClicked = !startBtnClicked
     startImg.src = startBtnClicked ? "./assets/start.svg" : "./assets/close.svg"
@@ -569,53 +427,38 @@ function getMineCounts() {
                 cellMineCount = 0
             }
             cell.setAttribute("data-mine-count", cellMineCount);
-            switch (cellMineCount) {
-                case 1:
-                    cell.style.color="#fff    "
-                    break;
-                case 2:
-                    cell.style.color="#FB8B24    "
-                    break;
-                case 3:
-                    cell.style.color="#f52045   "
-                    break;
-                case 4:
-                    cell.style.color="#3AB0FF "
-                    break;
-                case 5:
-                    cell.style.color="#0E2E3B "
-                    break;
-                case 6:
-                    cell.style.color="#750546 "
-                    break;
-            
-                default:
-                    cell.style.color="black"
-                    break;
-            }
+            cell.style.color = numberColors[cellMineCount]
         }
     }
 }
 
 function showAllMines(cells) {
-    cells.forEach(cell => {
-        const celldataType = cell.getAttribute("data-cell-type")
-        if (cell.classList.contains("mineCell") && celldataType != "mine") {
-            cell.classList.remove("mineCell")
-            cell.classList.add("wrongeCell")
-        }
-        cell.classList.remove("mineCell")
-    })
-    for (let i = 0; i < rowCount; i++) {
-        for (let j = 0; j < colCount; j++) {
-            let isMine = mineIndexes.some(mineIndex => mineIndex[0] === indexes[i][j][0] && mineIndex[1] === indexes[i][j][1]);
-            const cell = document.getElementById("mainDiv").children[i * colCount + j];
+    const unopenedMines = [];
 
-            if (isMine) {
-                cell.classList.add("mineCell")
-            }
+    cells.forEach(cell => {
+        const celldataType = cell.getAttribute("data-cell-type");
+
+        if (celldataType === "mine" && !cell.classList.contains("mineCell")) {
+            unopenedMines.push(cell);
         }
-    }
+
+        if (cell.classList.contains("mineCell") && celldataType !== "mine") {
+            cell.classList.remove("mineCell");
+            cell.classList.add("wrongeCell");
+        }
+    });
+
+    const getOneUnopenedMine = setInterval(() => {
+        if (unopenedMines.length > 0) {
+            const unopenedmineIndex = randomIndex(unopenedMines);
+            unopenedMines[unopenedmineIndex].classList.add("mineCell");
+            unopenedMines.splice(unopenedmineIndex, 1);
+        } else {
+            clearInterval(getOneUnopenedMine);
+        }
+    }, mineOpenTime);
+
+    console.log("unopened mines: ", unopenedMines);
 }
 
 function Time() {
@@ -624,7 +467,7 @@ function Time() {
 
     if (areAllMinesOpened()) {
         gameModal.style.display = "block"
-        gameLoseModal.style.display="none"
+        gameLoseModal.style.display = "none"
         gameWinModal.style.display = "flex"
         gameModalTime.textContent = timerSpan.textContent
         clearInterval(gameTimer)
@@ -632,7 +475,6 @@ function Time() {
 }
 
 function areAllMinesOpened() {
-    // Tüm indekslere sahip olan hücrelerin mineCell class'ına sahip olup olmadığını kontrol et
     const isAllMinesOpened = mineIndexes.every(([rowIndex, colIndex]) => {
         const cell = document.getElementById("mainDiv").children[rowIndex * colCount + colIndex];
         return cell.classList.contains("mineCell");
@@ -640,7 +482,59 @@ function areAllMinesOpened() {
     return isAllMinesOpened;
 }
 
+function setSettings(selectedDifficulty) {
+    const currentSettings = gameSettings[selectedDifficulty];
 
-//kodda tekrar eden yerleri düzenle yeni fonksiyonlar yaz 
-//ekran boyutuna  göre media queryler yaz
-//telefon ve tabletler için sol- sağ tıklamak için tasarım ve işlemleri ekle
+    colCount = currentSettings.colCount;
+    rowCount = currentSettings.rowCount;
+    mineCount = currentSettings.mineCount;
+    cellWidth = currentSettings.cellWidth;
+    cellHeight = currentSettings.cellHeight;
+    mineOpenTime=currentSettings.mineOpenTime
+}
+
+function firstClick(cell, index) {
+    cellType = "empty"
+    cell.setAttribute("data-cell-type", cellType)
+    cell.classList.add("emptyCell")
+
+    const i = Math.floor(index / colCount)
+    const j = index % colCount
+
+    let firstClickedIndex = [i, j]
+
+    getMines(firstClickedIndex)
+    putMines()
+    getMineCounts()
+    gameTimer = setInterval(Time, 1000)
+    isStarted = true
+    cell.innerHTML = ""
+}
+
+function endGame() {
+    const cells = document.querySelectorAll(".cell")
+    cells.forEach(cell => {
+        cell.classList.remove("cell")
+        cell.remove()
+    });
+    colCount = 0
+    rowCount = 0
+    mineCount = 0
+    mineIndexes.length = 0
+    mainDiv.style.gridTemplateColumns = `none`;
+    mainDiv.style.gridTemplateRows = `none`;
+    mainDiv.appendChild(demoImg)
+    demoImg.src = "./assets/demo.png"
+    mineCountSpan.textContent = "0"
+    clearInterval(gameTimer)
+    timerSpan.textContent = "0"
+    levelSelect.value = "easy"
+    isStarted = false
+    gameModal.style.display = "none"
+    mainDiv.style.width = "440px"
+}
+
+function randomIndex(unopenedMines) {
+    const randomMineIndex = Math.floor(Math.random() * unopenedMines.length)
+    return randomMineIndex
+}
