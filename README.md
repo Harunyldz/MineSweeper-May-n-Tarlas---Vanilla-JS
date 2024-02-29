@@ -1,6 +1,6 @@
 # Mayın Tarlası Oyunu
 
-Bu proje, JavaScript ve HTML/CSS kullanılarak geliştirilmiş basit bir Mayın Tarlası oyununu içermektedir.
+Bu proje, JavaScript ve HTML/CSS kullanılarak geliştirilmiş bir Mayın Tarlası oyununu içermektedir.
 
 ## Kurulum
 
