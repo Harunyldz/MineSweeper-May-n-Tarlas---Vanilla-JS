@@ -2,7 +2,7 @@ const gameSettings = {
     easy: {
       colCount: 10,
       rowCount: 10,
-      mineCount: 10,
+      mineCount: 15,
       cellWidth: "40px",
       cellHeight: "40px",
       mineOpenTime:400
@@ -10,10 +10,10 @@ const gameSettings = {
     middle: {
       colCount: 18,
       rowCount: 14,
-      mineCount: 40,
+      mineCount: 44,
       cellWidth: "35px",
       cellHeight: "35px",
-      mineOpenTime:300
+      mineOpenTime:200
     },
     hard: {
       colCount: 24,
@@ -21,7 +21,7 @@ const gameSettings = {
       mineCount: 99,
       cellWidth: "30px",
       cellHeight: "30px",
-      mineOpenTime:200
+      mineOpenTime:100
     },
   };
   
